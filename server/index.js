@@ -8,7 +8,9 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 //grapiql: use this tool when we are on development
-app.use('/graphql', graphqlHTTP({
+app.use(
+    '/graphql', 
+    graphqlHTTP({
     schema,
     graphiql: process.env.NODE_ENV === 'development',
 }));
