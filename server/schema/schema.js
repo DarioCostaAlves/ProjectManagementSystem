@@ -9,6 +9,7 @@ const {
     GraphQLSchema,
     GraphQLList,
     GraphQLNonNull,
+    GraphQLEnumType,
 } = require('graphql');
 
 //Client Type
@@ -26,11 +27,12 @@ const ClientType = new GraphQLObjectType({
 const ProjectType = new GraphQLObjectType({
     name: 'Project',
     fields: () => ({
-        name: { type: GraphQLID },
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
         description: { type: GraphQLString },
         status: { type: GraphQLString },
         client: {
-            type: new GraphQLList(ClientType),
+            type: ClientType,
             resolve(parent, args) {
                 return Client.findById(parent.clientId);
             },
@@ -100,7 +102,35 @@ const mutation = new GraphQLObjectType({
             },
             resolve(parent, args){
                 return Client.findByIdAndRemove(args.id);
-            }
+            },
+        },
+        // Add a Project
+        addProject: {
+            type: ProjectType,
+            args: {
+                name: { type: new GraphQLNonNull(GraphQLString) },
+                description: { type: new GraphQLNonNull(GraphQLString) }, 
+                status: { type: new GraphQLEnumType({
+                    name: 'ProjectStatus',
+                        values: {
+                            'new': { value: 'Not Started' }, 
+                            'progress': { value: 'In Progress' }, 
+                            'completed': { value: 'Completed' },   
+                        }
+                    }),
+                    defaultValue: 'Not Started',
+                },
+                clientId: { type: new GraphQLNonNull(GraphQLID) },
+            },
+            resolve(parent, args) {
+                const project = new Project({
+                    name: args.name,
+                    description: args.description,
+                    status: args.status,
+                    clientId: args.clientId,
+                });
+                return project.save();
+            },
         },
     }
 });
