@@ -27,7 +27,7 @@ export default function AddClientModal() {
         if(name === '' || email === '' || phone === '') {
             return alert('Please fill in all fields');
         }
-
+        // @ts-ignore
         addClient(name, email, phone);
         setName("");
         setEmail("");
@@ -45,8 +45,8 @@ export default function AddClientModal() {
             </div>
             
         </button>
-
-        <div className="modal fade" id="addClientModal" tabIndex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
+        
+        <div className="modal fade" id="addClientModal" tabIndex={1} aria-labelledby="addClientModalLabel" aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
