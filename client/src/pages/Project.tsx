@@ -11,6 +11,20 @@ export default function Project() {
     if (loading) return <Spinner />;
     if (error) return <p>Something went wrong</p>;
   return (
-    <div>Project</div>
+    <>
+      { !loading && !error && (
+        <div className="mx-auto w-75 card p-5">
+          <h1>{data.project.name}</h1>
+          <p>{data.project.description}</p>
+          <h5 className="mt-3">Status:</h5>          
+          <p className="lead">{data.project.status}</p>
+          <Link to="/" className="btn btn-light btn-sm w-25 d-inline ms-auto">
+            Back to projects
+          </Link>
+
+          <ClientInfo client={data.project.client} />
+        </div>      
+      )}
+    </>
   )
 }
