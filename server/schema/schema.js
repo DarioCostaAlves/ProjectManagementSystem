@@ -168,7 +168,7 @@ const mutation = new GraphQLObjectType({
                     }
                 }, { new: true });
             },
-        },
+        }        
     }
 });
 
